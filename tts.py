@@ -53,7 +53,7 @@ def synthesize(text):
     return file_path
 
 def add_padding(file_path: Path, background_path: Path):
-    cmd = f'ffmpeg -i "{str(background_path)}" -i "{str(file_path)}" -filter_complex "[1]volume=volume=3.0[speech];[0]volume=volume=0.5[npc];[speech]adelay=1500ms[speech];[speech]apad=pad_len=75000[speech];[npc][speech]amix=duration=shortest" data/output/out.mp3 -y'
+    cmd = f'ffmpeg -i "{str(background_path)}" -i "{str(file_path)}" -filter_complex "[1]volume=volume=3.0[speech];[0]volume=volume=0.5[npc];[speech]adelay=1500ms|1500ms[speech];[speech]apad=pad_len=75000[speech];[npc][speech]amix=duration=shortest" data/output/out.mp3 -y'
     args = shlex.split(cmd)
     with Popen(args, stdout=PIPE) as proc:
         print(proc.stdout.read())

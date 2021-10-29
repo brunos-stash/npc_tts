@@ -38,8 +38,8 @@ def inline_caps(update: Update, context: CallbackContext):
 
 if __name__ == "__main__":
     with open('api.token', 'r') as f:
-        token = f.readline()
-    updater = Updater(token)
+        token = f.readlines()
+    updater = Updater(token[0])
     updater.dispatcher.add_handler(CommandHandler('tts', synthesize))
     updater.dispatcher.add_handler(InlineQueryHandler(inline_caps))
 
