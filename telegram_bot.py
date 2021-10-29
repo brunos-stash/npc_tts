@@ -35,9 +35,13 @@ def inline_caps(update: Update, context: CallbackContext):
     # with open(file_path, 'rb') as f:
     #     _audio = f.read()
         # update.message.reply_audio(audio=_audio)
-updater = Updater('2006911032:AAGvZe6iPVjb4YAnMmA0taDb8eMCZerNmyI')
-updater.dispatcher.add_handler(CommandHandler('tts', synthesize))
-updater.dispatcher.add_handler(InlineQueryHandler(inline_caps))
 
-updater.start_polling()
-updater.idle()
+if __name__ == "__main__":
+    with open('api.token', 'r') as f:
+        token = f.readline()
+    updater = Updater(token)
+    updater.dispatcher.add_handler(CommandHandler('tts', synthesize))
+    updater.dispatcher.add_handler(InlineQueryHandler(inline_caps))
+
+    updater.start_polling()
+    updater.idle()

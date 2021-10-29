@@ -8,9 +8,9 @@ import requests
 
 # init paths
 APP_FOLDER = Path(Path(__name__).parent.resolve())
-APP_CONFIG_PATH = Path(APP_FOLDER, "static_web/resource/", "app-config.json")
+# APP_CONFIG_PATH = Path(APP_FOLDER, "static_web/resource/", "app-config.json")
 SPEAKER_CONFIG = Path(
-    APP_FOLDER, "static_web/resource/json-mapping/", "speaker_map.json"
+    APP_FOLDER, "data", "speaker_map.json"
 )
 TTS_CONFIG_PATH = Path(APP_FOLDER, "vits/model", "config.json")
 TTS_MODEL_PATH = Path(APP_FOLDER, "vits/model", "G_600000.pth")
