@@ -57,7 +57,7 @@ def add_padding(file_path: Path, background_path: Path):
     args = shlex.split(cmd)
     with Popen(args, stdout=PIPE) as proc:
         print(proc.stdout.read())
-    return Path('out.mp3')
+    return Path('data/output/out.mp3')
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
