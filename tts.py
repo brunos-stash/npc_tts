@@ -3,7 +3,7 @@ from datetime import datetime
 from pathlib import Path
 from app.utils import *
 from subprocess import Popen, PIPE
-import shlex
+import shlex, re
 try:
     from vits.synthesizer import Synthesizer
 
@@ -20,14 +20,27 @@ try:
 except ImportError as err:
     print(err)
 
-def synthesize(text):
+def synthesize(text, variance_a='0.35', variance_b='0.5', speed='1.3'):
+    _var_a = float(variance_a)
+    _var_b = float(variance_b)
+    _speed = float(speed)
+    _var_a = 0 if _var_a < 0 else _var_a
+    _var_a = 1.1 if _var_a > 1.1 else _var_a
+    _var_b = 0 if _var_b < 0 else _var_b
+    _var_b = 0.9 if _var_b > 0.9 else _var_b
+    _speed = 0.2 if _speed < 0.2 else _speed
+    _speed = 5 if _speed > 5 else _speed
+    var_a = str(_var_a)
+    var_b = str(_var_b)
+    speed = str(_speed)
+    print(f'a: {var_a}, b: {var_b}, speed: {speed}')
     _params = {'speaker_id': '47',
         'speaker_name': 'Christian Wewerka',
         'text_selected': 'true',
         'out_path_use': False,
-        'speech_speed': '1.3',
-        'speech_var_a': '0.35',
-        'speech_var_b': '0.5',
+        'speech_speed': speed,
+        'speech_var_a': var_a,
+        'speech_var_b': var_b,
         'file_export_ext': 'wav',
         'text': text,
         'file_content': None,
@@ -59,10 +72,36 @@ def add_padding(file_path: Path, background_path: Path):
         print(proc.stdout.read())
     return Path('data/output/out.mp3')
 
+
+# def regtest(text):
+#     try:
+#         match = re.search("\s-a\s(\d+(\.\d+)?)",text)
+#         var_a = match.group(1)
+#         text = text.replace(match.group(0), "")
+#     except:
+#         pass
+#     try:
+#         match = re.search("\s-b\s(\d+(\.\d+)?)",text)
+#         var_b = match.group(1)
+#         text = text.replace(match.group(0), "")
+#     except:
+#         pass
+#     try:
+#         match = re.search("\s-speed\s(\d+(\.\d+)?)",text)
+#         speed = match.group(1)
+#         text = text.replace(match.group(0), "")
+#     except:
+#         pass
+#     print(text)
+
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        raise Exception("needs text")
-    text = sys.argv[1]
-    background = Path('data/background/npc.mp3')
-    fp = synthesize(text)
-    add_padding(fp, background)
+    # if len(sys.argv) < 2:
+    #     raise Exception("needs text")
+    # text = sys.argv[1]
+    text = " -a 34 -b 994009 -speed 3.434. fkkl lekj"
+    text = " -b 994009 -speed 39 fkjekfjkl -speed 3.434fkkl lekj"
+
+    # regtest(f'"{text}"')
+    # background = Path('data/background/npc.mp3')
+    # fp = synthesize(text, variance_a='3', variance_b='3', speed='7')
+    # add_padding(fp, background)
