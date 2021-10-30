@@ -5,13 +5,35 @@ from telegram.ext import Updater, CommandHandler, CallbackContext, InlineQueryHa
 import tts
 from utils import is_admin
 import logging
-from uuid import uuid4
+import re
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 def synthesize(update: Update, context: CallbackContext) -> None:
+    var_a='0.35'
+    var_b='0.5'
+    speed='1.3'
     text = update.message.text.split('/tts ')[1]
-    file_path = tts.synthesize(text)
+    try:
+        match = re.search("-a\s(\d+(\.\d+)?)",text)
+        var_a = match.group(1)
+        text = text.replace(match.group(0), "")
+    except:
+        pass
+    try:
+        match = re.search("-b\s(\d+(\.\d+)?)",text)
+        var_b = match.group(1)
+        text = text.replace(match.group(0), "")
+    except:
+        pass
+    try:
+        match = re.search("-speed\s(\d+(\.\d+)?)",text)
+        speed = match.group(1)
+        text = text.replace(match.group(0), "")
+    except:
+        pass
+    print(text)
+    file_path = tts.synthesize(text, variance_a=var_a, variance_b=var_b, speed=speed)
     file_path = tts.add_padding(file_path, Path('data/background/npc.mp3'))
     with open(file_path, 'rb') as f:
         _audio = f.read()
