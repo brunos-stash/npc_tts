@@ -10,6 +10,9 @@ logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 def synthesize(update: Update, context: CallbackContext) -> None:
+    if update.message.chat.type == 'private':
+        if not is_admin(update.message.from_user.id): 
+            return
     var_a='0.35'
     var_b='0.5'
     speed='1.3'
